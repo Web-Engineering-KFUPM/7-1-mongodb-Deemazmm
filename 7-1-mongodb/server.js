@@ -42,7 +42,7 @@
  *   - After installation setup the environment variable path.
  *   - copy the connection string
  *   - open cmd and paste the connection string to establish connection with mongoDB cloud.
- *
+ *z
  * ============================================
  * TODO-5 Create DB & Collection
  * ============================================
@@ -151,7 +151,7 @@
  *  
  *    async function updateStudent() {
          await Student.updateOne({ name: "Ali" }, { age: 22 });
-         console.log("✅ Updated Ali");
+         console.log("Updated Ali");
       }
  * - Run server: node server.js and got to mongo cloud to see the updated document.
  * =====================================================
@@ -161,7 +161,7 @@
  *  
  *    async function deleteStudent() {
          await Student.deleteOne({ name: "Sara" });
-      console.log("✅ Deleted Sara");
+      console.log("Deleted Sara");
       }
  * - Run server: node server.js and got to mongo cloud to verify, document is deleted.
  * 
@@ -169,23 +169,60 @@
 
 import mongoose from "mongoose";
 
-// establish connection
 
+// ============================================
+// TODO-1: Establish Connection with MongoDB
+// ============================================
+mongoose.connect(
+  "mongodb+srv://Deemazm:IDontKnow22%3F@cluster0.iinc4cl.mongodb.net/labDB?retryWrites=true&w=majority"
+)
+.then(() => console.log("Connected to MongoDB via Mongoose"))
+.catch((err) => console.log("Connection error:", err));
 
-// define schema
+// ============================================
+// TODO-2: Define the schema of the DB
+// ============================================
+const studentSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  major: String
+});
+const Student = mongoose.model("Student", studentSchema);
 
+// ============================================
+// TODO-3: Create Document
+// ============================================
+async function createStudents() {
+  await Student.insertMany([
+     { name: "Ali", age: 21, major: "CS" },
+     { name: "Sara", age: 23, major: "SE" }
+  ]);
+  console.log("✅ Inserted");
+  }
+  createStudents();
 
-// create document
+// ============================================
+// TODO-4: Read Documents
+// ============================================
+async function readStudents() {
+  const all = await Student.find();
+  console.log(all);
+}
+readStudents();
 
+// ============================================
+// TODO-5: Update Document
+// ============================================
+async function updateStudent() {
+  await Student.updateOne({ name: "Ali" }, { age: 22 });
+  console.log("Updated Ali");
+}
 
-// read document
-
-
-// update document
-
-
-// delete document
-
-
-
+// ============================================
+// TODO-6: Delete Document
+// ============================================
+async function deleteStudent() {
+  await Student.deleteOne({ name: "Sara" });
+console.log("Deleted Sara");
+}
 
